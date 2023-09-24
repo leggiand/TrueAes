@@ -6,7 +6,7 @@ import (
 	"github.com/zenazn/pkcs7pad"
 )
 
-// A simple function for encrypting a 16 bytes string
+// Encrypt A simple function for encrypting a 16 bytes string
 func Encrypt(key string, mess string) string {
 	cypher, err := aes.NewCipher([]byte(key))
 	if err != nil {
@@ -17,7 +17,7 @@ func Encrypt(key string, mess string) string {
 	return hex.EncodeToString(encrypted)
 }
 
-// A simple function for decrypting a 16 bytes string
+// Decrypt A simple function for decrypting a 16 bytes string
 func Decrypt(key string, mess string) string {
 	txt, _ := hex.DecodeString(mess)
 	cypher, err := aes.NewCipher([]byte(key))
@@ -29,20 +29,20 @@ func Decrypt(key string, mess string) string {
 	decrypted := string(decryptedByte)
 	return decrypted
 }
-func TotalUnpad(topad string) string {
+func TotalUnpad(topad *string) string {
 	var result = ""
-	if len(topad) < 16 {
-		tmp, _ := pkcs7pad.Unpad([]byte(topad))
+	if len(*topad) < 16 {
+		tmp, _ := pkcs7pad.Unpad([]byte(*topad))
 		result = string(tmp)
 		return result
-	} else if len(topad) == 16 {
+	} else if len(*topad) == 16 {
 
-		tmp, _ := pkcs7pad.Unpad([]byte(topad))
+		tmp, _ := pkcs7pad.Unpad([]byte(*topad))
 		result = string(tmp)
 	} else {
 		result = ""
 		buffer := make([]byte, 0)
-		for index, element := range []byte(topad) {
+		for index, element := range []byte(*topad) {
 			buffer = append(buffer, element)
 			if (index+1)%16 == 0 {
 				tmp, err := pkcs7pad.Unpad(buffer)
