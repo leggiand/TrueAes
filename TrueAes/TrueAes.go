@@ -18,9 +18,9 @@ func Encrypt(key string, mess string) string {
 }
 
 // Decrypt A simple function for decrypting a 16 bytes string
-func Decrypt(key string, mess string) string {
+func Decrypt(key *string, mess string) string {
 	txt, _ := hex.DecodeString(mess)
-	cypher, err := aes.NewCipher([]byte(key))
+	cypher, err := aes.NewCipher([]byte(*key))
 	if err != nil {
 		panic(err)
 	}
@@ -104,7 +104,7 @@ func FullDecrypt(key string, todecr string) string {
 	for index, element := range []byte(todecr) {
 		buffer = append(buffer, element)
 		if (index+1)%32 == 0 {
-			result += Decrypt(key, string(buffer))
+			result += Decrypt(&key, string(buffer))
 			buffer = nil
 		}
 	}
